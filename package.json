@@ -1,6 +1,6 @@
 {
   "name": "wischeropp.jonas.scene-view-pie-menu",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "displayName": "Scene View Pie Menu",
   "description": "Package to easily create pie menus in the scene view.",
   "unity": "2022.3",
