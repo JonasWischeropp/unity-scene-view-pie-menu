@@ -2,11 +2,13 @@
 This small unity package makes it easy to create pie menus in the scene view to trigger custom actions.
 The pie menu works similar to the [blender](blender.org) pie menu.
 
-<!-- TODO demo gif -->
+<p align="center">
+<img src="demo.gif", alt="Demonstration">
+</p>
 
 ## Usage
-Create a `PieMenu` with `PieMenuEntry`s and trigger its `Perform` method with a [`ClutchShortcut`](https://docs.unity3d.com/ScriptReference/ShortcutManagement.ClutchShortcutAttribute.html).  
-Overloads of the `PieMenuEntry` constructor allow setting the icon with a custom texture or by a string value to use unity build in icons. A non-exhaustive list can be found [here](https://github.com/halak/unity-editor-icons/blob/master/README.md).
+Create a `PieMenu` object with `PieMenuEntry`s and trigger its `Perform` method with a [`ClutchShortcut`](https://docs.unity3d.com/ScriptReference/ShortcutManagement.ClutchShortcutAttribute.html) (see [example](#exmaple)).  
+Overloads of the `PieMenuEntry` constructor allow setting the icon with a custom texture or by a string value to use unity build in icons. A non-exhaustive icon list can be found [here](https://github.com/halak/unity-editor-icons/blob/master/README.md).
 
 ## Example
 The following example shows how this package can be used to create the pie menu in the demo.
