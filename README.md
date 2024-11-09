@@ -33,7 +33,7 @@ public static class DrawModePieMenu {
     }
 }
 ```
-I would recommend to disable `Project Settings > Input Manager > Use Physical Keys`. Otherwise, triggering a shortcut like `KeyCode.Z` would for example require pressing `Y` on a `QWERTZ` keyboard because of the swapped key locations.
+> I would recommend to disable `Project Settings > Input Manager > Use Physical Keys`. Otherwise, triggering a shortcut like `KeyCode.Z` would for example require pressing `Y` on a `QWERTZ` keyboard because of the swapped key locations.
 
 ## Setup
 Installation using the Package Manager:
