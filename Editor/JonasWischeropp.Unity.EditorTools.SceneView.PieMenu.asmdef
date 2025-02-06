@@ -1,3 +1,4 @@
 {
-	"name": "JonasWischeropp.Unity.EditorTools.SceneView.PieMenu"
+	"name": "JonasWischeropp.Unity.EditorTools.SceneView.PieMenu",
+	"includePlatforms": ["Editor"]
 }
