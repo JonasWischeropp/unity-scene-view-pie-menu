@@ -12,7 +12,7 @@ namespace JonasWischeropp.Unity.EditorTools.SceneView {
 
         const float CIRCLE_RADIUS = 15f;
         const float ENTRY_RADIUS = 80f;
-        
+
         int _count => _entries.Length;
         float[] _angles;
         Vector2[] _positions;
@@ -27,13 +27,13 @@ namespace JonasWischeropp.Unity.EditorTools.SceneView {
             CIRCLE_TEXTURE = AssetDatabase.LoadAssetAtPath<Texture2D>($"{IMAGES_PATH}circle.png");
             CIRCLE_DIRECTION_TEXTURE = AssetDatabase.LoadAssetAtPath<Texture2D>($"{IMAGES_PATH}circle_direction.png");
         }
-        
+
         public PieMenu(PieMenuEntry[] options) {
             _entries = options;
             _angles = Angles(_entries.Length);
             _positions = Positions(_angles);
         }
-        
+
         static int CalculateSelectedBox(float angle, float[] angles) {
             int biggerAngleIndex = Array.BinarySearch(angles, angle);
             if (biggerAngleIndex >= 0) {
@@ -60,7 +60,7 @@ namespace JonasWischeropp.Unity.EditorTools.SceneView {
             }
 
             for (int i = 0; i < _count; i++) {
-                DrawBox(_center, _positions[i], ENTRY_RADIUS, _entries[i].text, i, _entries[i].icon, i == _selected);
+                DrawBox(_center, _positions[i], ENTRY_RADIUS, _entries[i].text, i, _entries[i].icon, i == _selected, _entries[i].isActive());
             }
 
             Handles.EndGUI();
@@ -70,7 +70,7 @@ namespace JonasWischeropp.Unity.EditorTools.SceneView {
             if (_center == -Vector2.one) {
                 _center = Event.current.mousePosition;
             }
-            
+
             // Using hotControl to be able to capture MouseUp,
             // otherwise it would be captured by Unity.
             int controlID = GUIUtility.GetControlID(FocusType.Passive);
@@ -78,7 +78,7 @@ namespace JonasWischeropp.Unity.EditorTools.SceneView {
             switch (Event.current.GetTypeForControl(controlID)) {
                 case EventType.MouseUp:
                     switch (Event.current.button) {
-                        case 0: 
+                        case 0:
                             PerformSelection();
                             break;
                         default:
@@ -130,7 +130,7 @@ namespace JonasWischeropp.Unity.EditorTools.SceneView {
             }
             GUIUtility.hotControl = 0;
         }
-        
+
         void Show() {
             _show = true;
             UnityEditor.SceneView.duringSceneGui += OnSceneGUI;
@@ -147,7 +147,7 @@ namespace JonasWischeropp.Unity.EditorTools.SceneView {
             }
             Hide();
         }
-        
+
         public void Perform(ShortcutArguments arguments) {
             if (!_show && arguments.stage == ShortcutStage.Begin) {
                 Show();
@@ -158,13 +158,13 @@ namespace JonasWischeropp.Unity.EditorTools.SceneView {
                 PerformSelection();
             }
         }
-        
+
         static Vector2 SceneViewCenter(UnityEditor.SceneView view) {
             return 0.5f / EditorGUIUtility.pixelsPerPoint * new Vector2(view.camera.pixelWidth, view.camera.pixelHeight);
         }
-        
+
         static Vector2[] Positions(float[] angles) {
-            Vector2[] positions = new Vector2[angles.Length];        
+            Vector2[] positions = new Vector2[angles.Length];
             for (int i = 0; i < positions.Length; i++) {
                 float rad = angles[i] * Mathf.Deg2Rad;
                 positions[i] = new Vector2(Mathf.Cos(rad), Mathf.Sin(rad));
@@ -180,7 +180,7 @@ namespace JonasWischeropp.Unity.EditorTools.SceneView {
             int segmentIndex = 0;
             int index = 0;
             while (index < angles.Length) {
-                angles[index++] = segmentIndex * segment;            
+                angles[index++] = segmentIndex * segment;
                 if (remainder > 0) {
                     angles[index++] = (segmentIndex + 1) * segment;
                     remainder--;
@@ -189,7 +189,7 @@ namespace JonasWischeropp.Unity.EditorTools.SceneView {
             }
             return angles;
         }
-        
+
         static int Log2(int x) {
             int result = -1;
             while (x > 0) {
@@ -198,20 +198,21 @@ namespace JonasWischeropp.Unity.EditorTools.SceneView {
             }
             return result;
         }
-        
+
         static int Log2(int x, out int remainder) {
             int log2 = Log2(x);
             remainder = x & ~(1 << log2);
             return log2;
         }
-        
+
         static Rect CenteredRect(Vector2 position, Vector2 size) => CenteredRect(position.x, position.y, size.x, size.y);
 
         static Rect CenteredRect(float x, float y, float width, float height) {
             return new Rect(x - 0.5f * width, y - 0.5f * height, width, height);
         }
 
-        static void DrawBox(Vector2 center, Vector2 circlePosition, float radius, string text, int number, Texture icon, bool selected = false) {
+        static void DrawBox(Vector2 center, Vector2 circlePosition, float radius, string text, int number, Texture icon,
+            bool selected = false, bool active = false) {
             GUIContent content = new GUIContent($" {text}    {number,2}", icon);
 
             GUIStyle style = GUI.skin.button;
@@ -227,7 +228,10 @@ namespace JonasWischeropp.Unity.EditorTools.SceneView {
             Rect rect = new Rect(position, size);
 
             Color oldColor = GUI.color;
-            if (selected) {
+            if (active) {
+                GUI.color = new Color(1, 1, 1.5f, 1f);
+            }
+            else if (selected) {
                 float v = 1.25f;
                 GUI.color = new Color(v,v,v,1f);
             }

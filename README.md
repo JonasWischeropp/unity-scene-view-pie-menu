@@ -20,9 +20,9 @@ using UnityEngine;
 
 public static class DrawModePieMenu {
     static PieMenu overlay = new PieMenu(new PieMenuEntry[]{
-        new PieMenuEntry("Shaded", "TreeEditor.Material", () => SetDrawMode(DrawCameraMode.Normal)),
-        new PieMenuEntry("Wireframe", "TreeEditor.Geometry On", () => SetDrawMode(DrawCameraMode.Wireframe)),
-        new PieMenuEntry("Shaded Wireframe", "d_PreMatSphere", () => SetDrawMode(DrawCameraMode.TexturedWire)),
+        CreateEntry("Shaded", "TreeEditor.Material", DrawCameraMode.Normal),
+        CreateEntry("Wireframe", "TreeEditor.Geometry On", DrawCameraMode.Wireframe),
+        CreateEntry("Shaded Wireframe", "d_PreMatSphere", DrawCameraMode.TexturedWire),
     });
 
     [ClutchShortcut("Draw Mode Pie Menu", typeof(SceneView), KeyCode.Z)]
@@ -30,8 +30,11 @@ public static class DrawModePieMenu {
         overlay.Perform(arguments);
     }
 
-    static void SetDrawMode(DrawCameraMode mode) {
-        SceneView.lastActiveSceneView.cameraMode = SceneView.GetBuiltinCameraMode(mode);
+    static PieMenuEntry CreateEntry(string name, string icon, DrawCameraMode mode) {
+        return new PieMenuEntry(name, icon,
+            () => SceneView.lastActiveSceneView.cameraMode = SceneView.GetBuiltinCameraMode(mode),
+            () => SceneView.lastActiveSceneView.cameraMode == SceneView.GetBuiltinCameraMode(mode)
+        );
     }
 }
 ```
@@ -42,5 +45,5 @@ Installation using the Package Manager:
 1. Click on the `+` in the `Package Manager` window
 2. Chose `Add package from git URL...`
 3. Insert the following URL `https://github.com/JonasWischeropp/unity-scene-view-pie-menu.git`  
-A specific [release](https://github.com/JonasWischeropp/unity-scene-view-pie-menu/releases) version can be specified by appending `#<version>` (e.g. `...e-menu.git#1.0.1`).
+A specific [release](https://github.com/JonasWischeropp/unity-scene-view-pie-menu/releases) version can be specified by appending `#<version>` (e.g. `...e-menu.git#1.1.0`).
 4. Press the `Add`-Button
